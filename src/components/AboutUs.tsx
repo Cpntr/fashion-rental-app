@@ -17,7 +17,7 @@ const AboutUs: React.FC = () => (
           {/* ───────── Left column : portrait ───────── */}
           <div className="flex justify-center lg:justify-start">
             <img
-              src="/profile-pic.png"
+              src="/profile-pic1.jpg"
               alt="Iti Vashistha"
               className="w-48 h-48 md:w-60 md:h-60 object-cover rounded-full ring-4 ring-pink-500/30 shadow-lg"
             />

@@ -1,39 +1,32 @@
-// src\utils\generateMockDresses.ts
 
-// src\utils\generateMockDresses.ts
 import type { Dress } from "../types/dress";
+import { DRESS_CATALOGUE } from "../mocks/dresses";
 
-export const generateMockDresses = (page: number, limit = 12): Dress[] => {
-  const types = [
-    "Indian Traditional",
-    "Western Party",
-    "Wedding Special",
-    "Casual Chic",
-    "Formal Wear",
-  ];
-  const names = [
-    "Elegant Lehenga Set",
-    "Designer Anarkali",
-    "Silk Saree Combo",
-    "Party Gown",
-    "Wedding Ensemble",
-    "Cocktail Dress",
-    "Traditional Suit",
-    "Contemporary Kurti",
-    "Bridal Lehenga",
-    "Evening Gown",
-    "Festive Wear",
-    "Designer Sharara",
-  ];
+/**
+ * Deterministic paging over the static 100‑item catalogue.
+ * Falls back to the old random Unsplash URL if we ever run out of cached data.
+ */
+export function generateMockDresses(page = 1, limit = 12): Dress[] {
+  const start = (page - 1) * limit;
+  const slice = DRESS_CATALOGUE.slice(start, start + limit);
 
-  return Array.from({ length: limit }, (_, i) => ({
-    id: (page - 1) * limit + i + 1,
-    name: names[Math.floor(Math.random() * names.length)],
-    description: "Beautiful handcrafted dress perfect for special occasions.",
-    price: Math.floor(Math.random() * 5_000) + 500,
-    type: types[Math.floor(Math.random() * types.length)],
-    image: `https://images.unsplash.com/photo-${Math.floor(Math.random() * 1_000_000_000_000) + 1_500_000_000_000}?w=400&h=500&fit=crop&auto=format`,
-    rating: Math.floor(Math.random() * 2) + 4,
-    reviews: Math.floor(Math.random() * 100) + 10,
-  }));
-};
+  // Fallback so infinite‑scroll never crashes if we go past 100 items
+  if (slice.length < limit) {
+    const fallback: Dress[] = Array.from({ length: limit - slice.length }, (_, i) => {
+      const idx = start + slice.length + i + 1;
+      return {
+        id: idx,
+        name: `Mystery Dress #${idx}`,
+        description: "Beautiful handcrafted dress perfect for special occasions.",
+        price: Math.floor(Math.random() * 5_000) + 500,
+        type: ["Indian Traditional","Western Party","Wedding Special","Casual Chic","Formal Wear"][idx % 5],
+        image: `https://source.unsplash.com/random/400x500?fashion,dress,${idx}`,
+        rating: 4,
+        reviews: 12,
+      };
+    });
+    return [...slice, ...fallback];
+  }
+
+  return slice;
+}

@@ -1,6 +1,7 @@
 // src\components\FilterPanel.tsx
 import React from "react";
 import { Filter, Search } from "lucide-react";
+import { DRESS_TYPES } from "../constants/dressTypes";
 
 interface Filters {
   search: string;
@@ -64,12 +65,10 @@ const FilterPanel: React.FC<Props> = ({ filters, onFilterChange, isMobile = fals
                      outline-none text-sm"
         >
           <option value="">All Types</option>
-          <option value="Indian Traditional">Indian Traditional</option>
-          <option value="Western Party">Western Party</option>
-          <option value="Wedding Special">Wedding Special</option>
-          <option value="Casual Chic">Casual Chic</option>
-          <option value="Formal Wear">Formal Wear</option>
-        </select>
+                 {DRESS_TYPES.map((type) => (
+                      <option key={type} value={type}>{type}</option>
+                       ))}
+          </select>
       </div>
 
       {/* ───── price range ───── */}

@@ -4,7 +4,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App";
 import "./styles/index.css";
-
+import './index.css';
 import { registerSW } from "virtual:pwa-register";
 
 registerSW(); // Register Service Worker for PWA

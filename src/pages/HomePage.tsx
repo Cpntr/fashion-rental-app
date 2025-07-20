@@ -5,16 +5,21 @@ import React, {
   useCallback,
   lazy,
   Suspense,
+  useMemo,
 } from "react";
 import { Filter, X, Search } from "lucide-react";
+import {
+  loadMockDresses
+} from "../utils/loadDresses";
 
 import Header from "../components/Header/Header";
 import ImageSlider from "../components/ImageSlider";
 import DressCard from "../components/DressCard";
 import FilterPanel from "../components/FilterPanel";
-import { generateMockDresses } from "../utils/generateMockDresses";
+import { generateMockDresses } from "../utils/generateDresses";
 import { useInfiniteScroll } from "../hooks/useInfiniteScroll";
-
+import { DRESS_CATALOGUE } from "../mocks/dresses";
+import ScrollToTopButton from "../components/ScrollToTopButton";
 const AboutUs = lazy(() => import("../components/AboutUs"));
 
 /* -------------------------------------------------------------------------- */
@@ -54,6 +59,8 @@ const HomePage: React.FC = () => {
   const [showAbout, setShowAbout] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
+  const ITEMS_PER_PAGE = generateMockDresses(1).length;
+  const TOTAL_ITEMS = DRESS_CATALOGUE.length;
 
   const [filters, setFilters] = useState<Filters>({
     search: "",
@@ -63,27 +70,63 @@ const HomePage: React.FC = () => {
     rating: 0,
   });
 
+  const totalFilteredCount = useMemo(() => {
+  return DRESS_CATALOGUE.filter(
+    (d) =>
+      d.name.toLowerCase().includes(filters.search.toLowerCase()) &&
+      (filters.type === "" || d.type === filters.type) &&
+      d.price >= filters.minPrice &&
+      d.price <= filters.maxPrice &&
+      d.rating >= filters.rating
+  ).length;
+}, [filters]);
+
+
   /* ------------------------------ Data helpers --------------------------- */
-  const loadDresses = useCallback(
-    (page = 1, reset = false) => {
-      setLoading(true);
-      setTimeout(() => {
-        const newDresses = generateMockDresses(page);
-        setDresses((prev) => (reset ? newDresses : [...prev, ...newDresses]));
-        setFilteredDresses((prev) =>
-          reset ? newDresses : [...prev, ...newDresses]
+const loadDresses = useCallback(
+  (page = 1, reset = false, loadAll = false) => {
+    setLoading(true);
+    setTimeout(() => {
+      const newDresses = loadMockDresses(page, loadAll);
+
+      setDresses((prev) => {
+        const combined = reset ? newDresses : [...prev, ...newDresses];
+
+        // ✅ De-duplicate by ID
+        const unique = Array.from(
+          new Map(combined.map((d) => [d.id, d])).values()
         );
-        setHasMore(page < 5); // simulate 5 pages
-        setLoading(false);
-      }, 800);
-    },
-    []
-  );
+
+        return unique;
+      });
+
+      setFilteredDresses((prev) => {
+        const combined = reset ? newDresses : [...prev, ...newDresses];
+
+        const unique = Array.from(
+          new Map(combined.map((d) => [d.id, d])).values()
+        );
+
+        return unique;
+      });
+
+     const totalLoaded = (page) * ITEMS_PER_PAGE;
+     setHasMore(totalLoaded < TOTAL_ITEMS);
+
+      setLoading(false);
+    }, 800);
+  },
+  []
+);
+
+
+
 
   /* ------------------------------ Effects -------------------------------- */
-  useEffect(() => {
-    loadDresses(1, true); // initial fetch
-  }, [loadDresses]);
+useEffect(() => {
+  loadDresses(1, true, true); 
+}, [filters.type]);
+
 
   useEffect(() => {
     setFilteredDresses(
@@ -139,7 +182,7 @@ const HomePage: React.FC = () => {
               <section className="flex-1">
                 <div className="flex items-center justify-between mb-6">
                   <h2 className="text-2xl font-bold text-gray-800">
-                    Our Collection ({filteredDresses.length} dresses)
+                   Our Collection ({totalFilteredCount} dresses)
                   </h2>
                   <button
                     onClick={() => setMobileFiltersOpen(true)}
@@ -222,6 +265,8 @@ const HomePage: React.FC = () => {
           </div>
         </div>
       )}
+      <ScrollToTopButton />
+
     </div>
   );
 };

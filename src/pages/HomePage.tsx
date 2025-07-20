@@ -1,48 +1,19 @@
 // src/pages/HomePage.tsx
-import React, {
-  useState,
-  useEffect,
-  useCallback,
-  lazy,
-  Suspense,
-  useMemo,
-} from "react";
-import { Filter, X, Search } from "lucide-react";
-import {
-  loadMockDresses
-} from "../utils/loadDresses";
+import React, { useState, useEffect, useCallback, lazy, Suspense, useMemo } from 'react';
+import { Filter, X, Search } from 'lucide-react';
+import { loadMockDresses } from '../utils/loadDresses';
 
-import Header from "../components/Header/Header";
-import ImageSlider from "../components/ImageSlider";
-import DressCard from "../components/DressCard";
-import FilterPanel from "../components/FilterPanel";
-import { generateMockDresses } from "../utils/generateDresses";
-import { useInfiniteScroll } from "../hooks/useInfiniteScroll";
-import { DRESS_CATALOGUE } from "../mocks/dresses";
-import ScrollToTopButton from "../components/ScrollToTopButton";
-const AboutUs = lazy(() => import("../components/AboutUs"));
-
-/* -------------------------------------------------------------------------- */
-/*  Types                                                                     */
-/* -------------------------------------------------------------------------- */
-interface Dress {
-  id: number;
-  name: string;
-  description: string;
-  price: number;
-  type: string;
-  image: string;
-  rating: number;
-  reviews: number;
-}
-
-interface Filters {
-  search: string;
-  type: string;
-  minPrice: number;
-  maxPrice: number;
-  rating: number;
-}
+import Header from '../components/Header/Header';
+import ImageSlider from '../components/ImageSlider';
+import DressCard from '../components/DressCard';
+import FilterPanel from '../components/FilterPanel';
+import { generateMockDresses } from '../utils/generateDresses';
+import { useInfiniteScroll } from '../hooks/useInfiniteScroll';
+import { DRESS_CATALOGUE } from '../mocks/dresses';
+import ScrollToTopButton from '../components/ScrollToTopButton';
+import Footer from '../components/Footer/Footer';
+import type { Dress, Filters } from '../types/dress';
+const AboutUs = lazy(() => import('../components/AboutUs'));
 
 /* -------------------------------------------------------------------------- */
 /*  Page Component                                                            */
@@ -63,28 +34,26 @@ const HomePage: React.FC = () => {
   const TOTAL_ITEMS = DRESS_CATALOGUE.length;
 
   const [filters, setFilters] = useState<Filters>({
-    search: "",
-    type: "",
+    search: '',
+    type: '',
     minPrice: 0,
     maxPrice: 10_000,
     rating: 0,
   });
 
   const totalFilteredCount = useMemo(() => {
-  return DRESS_CATALOGUE.filter(
-    (d) =>
-      d.name.toLowerCase().includes(filters.search.toLowerCase()) &&
-      (filters.type === "" || d.type === filters.type) &&
-      d.price >= filters.minPrice &&
-      d.price <= filters.maxPrice &&
-      d.rating >= filters.rating
-  ).length;
-}, [filters]);
-
+    return DRESS_CATALOGUE.filter(
+      (d) =>
+        d.name.toLowerCase().includes(filters.search.toLowerCase()) &&
+        (filters.type === '' || d.type === filters.type) &&
+        d.price >= filters.minPrice &&
+        d.price <= filters.maxPrice &&
+        d.rating >= filters.rating,
+    ).length;
+  }, [filters]);
 
   /* ------------------------------ Data helpers --------------------------- */
-const loadDresses = useCallback(
-  (page = 1, reset = false, loadAll = false) => {
+  const loadDresses = useCallback((page = 1, reset = false, loadAll = false) => {
     setLoading(true);
     setTimeout(() => {
       const newDresses = loadMockDresses(page, loadAll);
@@ -93,9 +62,7 @@ const loadDresses = useCallback(
         const combined = reset ? newDresses : [...prev, ...newDresses];
 
         // ✅ De-duplicate by ID
-        const unique = Array.from(
-          new Map(combined.map((d) => [d.id, d])).values()
-        );
+        const unique = Array.from(new Map(combined.map((d) => [d.id, d])).values());
 
         return unique;
       });
@@ -103,41 +70,33 @@ const loadDresses = useCallback(
       setFilteredDresses((prev) => {
         const combined = reset ? newDresses : [...prev, ...newDresses];
 
-        const unique = Array.from(
-          new Map(combined.map((d) => [d.id, d])).values()
-        );
+        const unique = Array.from(new Map(combined.map((d) => [d.id, d])).values());
 
         return unique;
       });
 
-     const totalLoaded = (page) * ITEMS_PER_PAGE;
-     setHasMore(totalLoaded < TOTAL_ITEMS);
+      const totalLoaded = page * ITEMS_PER_PAGE;
+      setHasMore(totalLoaded < TOTAL_ITEMS);
 
       setLoading(false);
     }, 800);
-  },
-  []
-);
-
-
-
+  }, []);
 
   /* ------------------------------ Effects -------------------------------- */
-useEffect(() => {
-  loadDresses(1, true, true); 
-}, [filters.type]);
-
+  useEffect(() => {
+    loadDresses(1, true, true);
+  }, [filters.type]);
 
   useEffect(() => {
     setFilteredDresses(
       dresses.filter(
         (d) =>
           d.name.toLowerCase().includes(filters.search.toLowerCase()) &&
-          (filters.type === "" || d.type === filters.type) &&
+          (filters.type === '' || d.type === filters.type) &&
           d.price >= filters.minPrice &&
           d.price <= filters.maxPrice &&
-          d.rating >= filters.rating
-      )
+          d.rating >= filters.rating,
+      ),
     );
   }, [filters, dresses]);
 
@@ -155,7 +114,7 @@ useEffect(() => {
     setFilters((prev) => ({ ...prev, [name]: value }));
 
   const handleFavorite = (id: number, fav: boolean) =>
-    console.log(`Dress ${id} ${fav ? "added to" : "removed from"} favorites`);
+    console.log(`Dress ${id} ${fav ? 'added to' : 'removed from'} favorites`);
 
   /* ------------------------------ Render --------------------------------- */
   return (
@@ -182,7 +141,7 @@ useEffect(() => {
               <section className="flex-1">
                 <div className="flex items-center justify-between mb-6">
                   <h2 className="text-2xl font-bold text-gray-800">
-                   Our Collection ({totalFilteredCount} dresses)
+                    Our Collection ({totalFilteredCount} dresses)
                   </h2>
                   <button
                     onClick={() => setMobileFiltersOpen(true)}
@@ -211,20 +170,21 @@ useEffect(() => {
                 )}
 
                 {!hasMore && filteredDresses.length > 0 && (
-                  <p className="text-center text-gray-600 mt-8 py-8">
-                    You've seen all available dresses!
-                  </p>
+                  <div className="flex flex-col items-center justify-center mt-12 py-10 animate-fade-in">
+                    <div className="bg-gradient-to-r from-pink-500 to-orange-400 text-white px-6 py-3 rounded-full shadow-lg">
+                      <p className="text-lg font-semibold tracking-wide">
+                        🎉 You’ve reached the end!
+                      </p>
+                    </div>
+                    <p className="text-sm text-gray-500 mt-2">You've seen all available dresses.</p>
+                  </div>
                 )}
 
                 {filteredDresses.length === 0 && !loading && (
                   <div className="text-center py-12">
                     <Search size={64} className="mx-auto text-gray-400 mb-4" />
-                    <h3 className="text-xl font-semibold text-gray-600 mb-2">
-                      No dresses found
-                    </h3>
-                    <p className="text-gray-500">
-                      Try adjusting your filters to see more results.
-                    </p>
+                    <h3 className="text-xl font-semibold text-gray-600 mb-2">No dresses found</h3>
+                    <p className="text-gray-500">Try adjusting your filters to see more results.</p>
                   </div>
                 )}
               </section>
@@ -256,17 +216,14 @@ useEffect(() => {
               </button>
             </div>
             <div className="p-4">
-              <FilterPanel
-                filters={filters}
-                onFilterChange={handleFilterChange}
-                isMobile
-              />
+              <FilterPanel filters={filters} onFilterChange={handleFilterChange} isMobile />
             </div>
           </div>
         </div>
       )}
-      <ScrollToTopButton />
 
+      <ScrollToTopButton />
+      <Footer />
     </div>
   );
 };

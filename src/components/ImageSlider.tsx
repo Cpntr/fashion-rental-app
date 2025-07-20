@@ -1,76 +1,100 @@
-import React, { useState, useEffect } from "react";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+// src/components/ImageSlider.tsx
+import React, { useState, useEffect, useRef } from 'react';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { slides } from '../constants/constant';
 
-const slides = [
-  {
-    image: "https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?w=1200&h=600&fit=crop",
-    title: "Elegant Indian Wear",
-    subtitle: "Traditional meets contemporary",
-  },
-  {
-    image: "https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?w=1200&h=600&fit=crop",
-    title: "Designer Western Dresses",
-    subtitle: "Style that speaks volumes",
-  },
-  {
-    image: "https://images.unsplash.com/photo-1566479179817-0d7e4c9a3a6e?w=1200&h=600&fit=crop",
-    title: "Wedding Collection",
-    subtitle: "Make your special day unforgettable",
-  },
-];
+const AUTO_SLIDE_MS = 5_000;
 
 const ImageSlider: React.FC = () => {
   const [current, setCurrent] = useState(0);
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  /* ───── Auto‑advance (pause on hover) ───── */
+  const resetAutoSlide = () => {
+    if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    timeoutRef.current = setTimeout(
+      () => setCurrent((p) => (p + 1) % slides.length),
+      AUTO_SLIDE_MS,
+    );
+  };
 
   useEffect(() => {
-    const t = setInterval(() => setCurrent((p) => (p + 1) % slides.length), 5_000);
-    return () => clearInterval(t);
-  }, []);
+    resetAutoSlide();
 
+    // ✅ always return void
+    return () => {
+      if (timeoutRef.current !== null) {
+        clearTimeout(timeoutRef.current);
+      }
+    };
+  }, [current]);
+
+  /* ───── Handlers ───── */
   const go = (i: number) => setCurrent(i);
 
   return (
-    <div className="relative h-96 md:h-[500px] overflow-hidden rounded-2xl shadow-2xl">
+    <div
+      className="relative h-96 md:h-[500px] overflow-hidden rounded-3xl shadow-2xl group"
+      onMouseEnter={() => timeoutRef.current && clearTimeout(timeoutRef.current)}
+      onMouseLeave={resetAutoSlide}
+    >
       {slides.map((s, i) => (
         <div
           key={i}
-          className={`absolute inset-0 transition-opacity duration-1000 ${current === i ? "opacity-100" : "opacity-0"}`}
-          style={{
-            backgroundImage: `linear-gradient(rgba(0,0,0,.4), rgba(0,0,0,.4)), url(${s.image})`,
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-          }}
+          className={`absolute inset-0 transition-opacity duration-700 ease-out ${
+            current === i ? 'opacity-100' : 'opacity-0'
+          }`}
         >
-          <div className="flex items-center justify-center h-full text-center text-white">
-            <div className="px-4">
-              <h1 className="text-3xl md:text-5xl font-bold mb-4">{s.title}</h1>
-              <p className="text-lg md:text-2xl opacity-90">{s.subtitle}</p>
-            </div>
+          {/* Lazy‑loaded background image */}
+          <img
+            src={s.image}
+            alt={s.title}
+            loading={i === 0 ? 'eager' : 'lazy'}
+            fetchPriority={i === 0 ? 'high' : undefined}
+            className="w-full h-full object-cover object-center scale-110
+                       animate-kenburns"
+          />
+
+          {/* Gradient overlay + caption */}
+          <div className="absolute inset-0 bg-gradient-to-b from-black/50 to-black/30 flex flex-col items-center justify-center text-center px-4">
+            <h1 className="text-3xl md:text-5xl font-extrabold text-white drop-shadow-lg mb-3">
+              {s.title}
+            </h1>
+            <p className="text-lg md:text-2xl text-gray-200">{s.subtitle}</p>
           </div>
         </div>
       ))}
 
-      {/* arrows */}
+      {/* ───── Arrows ───── */}
       <button
         onClick={() => setCurrent((p) => (p - 1 + slides.length) % slides.length)}
-        className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/20 hover:bg-white/30 backdrop-blur-sm p-2 rounded-full"
+        aria-label="Previous slide"
+        className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/20 backdrop-blur-sm
+                   hover:bg-white/30 text-white p-2 rounded-full shadow-lg
+                   transition-all duration-300 opacity-0 group-hover:opacity-100"
       >
-        <ChevronLeft className="text-white" size={24} />
-      </button>
-      <button
-        onClick={() => setCurrent((p) => (p + 1) % slides.length)}
-        className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/20 hover:bg-white/30 backdrop-blur-sm p-2 rounded-full"
-      >
-        <ChevronRight className="text-white" size={24} />
+        <ChevronLeft size={24} />
       </button>
 
-      {/* dots */}
-      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex space-x-2">
+      <button
+        onClick={() => setCurrent((p) => (p + 1) % slides.length)}
+        aria-label="Next slide"
+        className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/20 backdrop-blur-sm
+                   hover:bg-white/30 text-white p-2 rounded-full shadow-lg
+                   transition-all duration-300 opacity-0 group-hover:opacity-100"
+      >
+        <ChevronRight size={24} />
+      </button>
+
+      {/* ───── Dots ───── */}
+      <div className="absolute bottom-5 left-1/2 -translate-x-1/2 flex gap-2">
         {slides.map((_, i) => (
           <button
             key={i}
             onClick={() => go(i)}
-            className={`w-3 h-3 rounded-full transition-all ${current === i ? "bg-pink-500" : "bg-white/50"}`}
+            aria-label={`Go to slide ${i + 1}`}
+            className={`h-3 w-3 rounded-full transition-colors duration-300
+              ${current === i ? 'bg-pink-500 scale-110 shadow' : 'bg-white/60 hover:bg-white'}`}
           />
         ))}
       </div>

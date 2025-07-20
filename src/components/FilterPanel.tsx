@@ -2,14 +2,9 @@
 import React from "react";
 import { Filter, Search } from "lucide-react";
 import { DRESS_TYPES } from "../constants/dressTypes";
+import type { Filters } from "../types/dress";
 
-interface Filters {
-  search: string;
-  type: string;
-  minPrice: number;
-  maxPrice: number;
-  rating: number;
-}
+
 interface Props {
   filters: Filters;
   onFilterChange: (key: keyof Filters, value: string | number) => void;

@@ -1,10 +1,11 @@
+// src\types\dress.ts
 export interface Dress {
   id: number;
   name: string;
   description: string;
   price: number;
   type: string;
-  image: string;
+  images: string | string[];
   rating: number;
   reviews: number;
 }

@@ -10,68 +10,73 @@ export default defineConfig({
     tailwindcss(),
 
     /* ───────────────────────── PWA ───────────────────────── */
-    VitePWA({
-      // show the install prompt the first time (you can keep "prompt")
-      registerType: "prompt",
+VitePWA({
+  registerType: "prompt",
 
-      /* Make SW run while `vite dev` is running */
-      devOptions: {
-        enabled: true,                // ← enables SW in dev
-        navigateFallback: "/"         // dev fallback
+  /* Make SW run while `vite dev` is running */
+  devOptions: {
+    enabled: true,
+    navigateFallback: "/",
+    suppressWarnings: true,   // ✅ suppress glob warnings
+    type: "module"            // optional but resolves some module mode issues
+  },
+
+  includeAssets: [
+    "favicon.svg",
+    "favicon.ico",
+    "robots.txt",
+    "apple-touch-icon.png"
+  ],
+
+  manifest: {
+    name: "Fashion Rental",
+    short_name: "FashionRental",
+    description: "Rent stunning outfits with style!",
+    theme_color: "#ec4899",
+    background_color: "#ffffff",
+    display: "standalone",
+    start_url: "/",
+    icons: [
+      {
+        src: "pwa-192x192.png",
+        sizes: "192x192",
+        type: "image/png"
       },
-
-      includeAssets: [
-        "favicon.svg",
-        "favicon.ico",
-        "robots.txt",
-        "apple-touch-icon.png"
-      ],
-
-      manifest: {
-        name: "Fashion Rental",
-        short_name: "FashionRental",
-        description: "Rent stunning outfits with style!",
-        theme_color: "#ec4899",       // Tailwind pink‑500
-        background_color: "#ffffff",
-        display: "standalone",
-        start_url: "/",
-        icons: [
-          {
-            src: "pwa-192x192.png",   //  ← no leading “/”: resolves in public/
-            sizes: "192x192",
-            type: "image/png"
-          },
-          {
-            src: "pwa-512x512.png",
-            sizes: "512x512",
-            type: "image/png"
-          },
-          {
-            src: "pwa-512x512.png",
-            sizes: "512x512",
-            type: "image/png",
-            purpose: "maskable any"
-          }
-        ]
+      {
+        src: "pwa-512x512.png",
+        sizes: "512x512",
+        type: "image/png"
       },
-
-      workbox: {
-        navigateFallback: "/index.html",
-        runtimeCaching: [
-          {
-            // cache all <img> requests (Unsplash etc.)
-            urlPattern: ({ request }) => request.destination === "image",
-            handler: "CacheFirst",
-            options: {
-              cacheName: "images",
-              expiration: {
-                maxEntries: 60,
-                maxAgeSeconds: 60 * 60 * 24 * 30 // 30 days
-              }
-            }
-          }
-        ]
+      {
+        src: "pwa-512x512.png",
+        sizes: "512x512",
+        type: "image/png",
+        purpose: "maskable any"
       }
-    })
+    ]
+  },
+
+  /* ✅ Add this workbox globDirectory override */
+  workbox: {
+    globDirectory: "dist", // 🔧 fixes the warning
+    globPatterns: ["**/*.{js,wasm,css,html}"],
+
+    navigateFallback: "/index.html",
+    runtimeCaching: [
+      {
+        urlPattern: ({ request }) => request.destination === "image",
+        handler: "CacheFirst",
+        options: {
+          cacheName: "images",
+          expiration: {
+            maxEntries: 60,
+            maxAgeSeconds: 60 * 60 * 24 * 30
+          }
+        }
+      }
+    ]
+  }
+})
+
   ]
 });

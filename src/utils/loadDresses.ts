@@ -1,3 +1,4 @@
+// src\utils\loadDresses.ts
 import { generateMockDresses } from "./generateDresses";
 import { DRESS_CATALOGUE } from "../mocks/dresses";
 

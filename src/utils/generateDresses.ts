@@ -14,23 +14,23 @@ export function generateMockDresses(page = 1, limit = DEFAULT_LIMIT): Dress[] {
   const start = (page - 1) * limit;
   const slice = DRESS_CATALOGUE.slice(start, start + limit);
 
-  if (slice.length < limit) {
-    const fallback: Dress[] = Array.from({ length: limit - slice.length }, () => {
-      const id = getNextDressId();
-      return {
-        id,
-        name: `Mystery Dress coming soon...`,
-        description: 'Beautiful handcrafted dress perfect for special occasions.',
-        price: 500 + Math.floor(Math.random() * 5000),
-        type: DRESS_TYPES[id % DRESS_TYPES.length],
-        images: [`https://source.unsplash.com/random/400x500?fashion,dress&sig=${id}`],
-        rating: 3 + Math.floor(Math.random() * 3),
-        reviews: 10 + Math.floor(Math.random() * 490),
-      };
-    });
+  // if (slice.length < limit) {
+  //   const fallback: Dress[] = Array.from({ length: limit - slice.length }, () => {
+  //     const id = getNextDressId();
+  //     return {
+  //       id,
+  //       name: `Mystery Dress coming soon...`,
+  //       description: 'Beautiful handcrafted dress perfect for special occasions.',
+  //       price: 500 + Math.floor(Math.random() * 5000),
+  //       type: DRESS_TYPES[id % DRESS_TYPES.length],
+  //       images: [`https://source.unsplash.com/random/400x500?fashion,dress&sig=${id}`],
+  //       rating: 3 + Math.floor(Math.random() * 3),
+  //       reviews: 10 + Math.floor(Math.random() * 490),
+  //     };
+  //   });
 
-    return [...slice, ...fallback];
-  }
+  //   return [...slice, ...fallback];
+  // }
 
   return slice;
 }

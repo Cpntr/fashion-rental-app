@@ -1,37 +1,32 @@
 // src/pages/HomePage.tsx
 import React, { useState, useEffect, useCallback, lazy, Suspense, useMemo } from 'react';
 import { Filter, X, Search } from 'lucide-react';
-import { loadMockDresses } from '../utils/loadDresses';
+// import { fetchAllDresses } from './src/api/dresses';
 
 import Header from '../components/Header/Header';
 import ImageSlider from '../components/ImageSlider';
 import DressCard from '../components/DressCard';
 import FilterPanel from '../components/FilterPanel';
-import { generateMockDresses } from '../utils/generateDresses';
 import { useInfiniteScroll } from '../hooks/useInfiniteScroll';
-import { DRESS_CATALOGUE } from '../mocks/dresses';
 import ScrollToTopButton from '../components/ScrollToTopButton';
 import Footer from '../components/Footer/Footer';
 import type { Dress, Filters } from '../types/dress';
+import { fetchAllDresses } from '../api/dresses';
 const AboutUs = lazy(() => import('../components/AboutUs'));
 
-/* -------------------------------------------------------------------------- */
-/*  Page Component                                                            */
-/* -------------------------------------------------------------------------- */
 const HomePage: React.FC = () => {
-  /* ------------------------------ Global state --------------------------- */
+  /* Global state */
   const [dresses, setDresses] = useState<Dress[]>([]);
   const [filteredDresses, setFilteredDresses] = useState<Dress[]>([]);
   const [loading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
 
-  /* ------------------------------ UI state ------------------------------- */
+  /* UI state */
   const [showAbout, setShowAbout] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
-  const ITEMS_PER_PAGE = generateMockDresses(1).length;
-  const TOTAL_ITEMS = DRESS_CATALOGUE.length;
+  const ITEMS_PER_PAGE = 12; // adjust as needed
 
   const [filters, setFilters] = useState<Filters>({
     search: '',
@@ -41,8 +36,9 @@ const HomePage: React.FC = () => {
     rating: 0,
   });
 
+  // Total dresses matching current filter
   const totalFilteredCount = useMemo(() => {
-    return DRESS_CATALOGUE.filter(
+    return dresses.filter(
       (d) =>
         d.name.toLowerCase().includes(filters.search.toLowerCase()) &&
         (filters.type === '' || d.type === filters.type) &&
@@ -50,43 +46,41 @@ const HomePage: React.FC = () => {
         d.price <= filters.maxPrice &&
         d.rating >= filters.rating,
     ).length;
-  }, [filters]);
+  }, [filters, dresses]);
 
-  /* ------------------------------ Data helpers --------------------------- */
-  const loadDresses = useCallback((page = 1, reset = false, loadAll = false) => {
+  // Dresses to display (client-side pagination)
+  const displayedDresses = useMemo(() => {
+    return filteredDresses.slice(0, currentPage * ITEMS_PER_PAGE);
+  }, [filteredDresses, currentPage, ITEMS_PER_PAGE]);
+
+  /* Data loader */
+  // Load dresses from the backend (replaces the old mock-based loader)
+  const loadDresses = useCallback(async () => {
     setLoading(true);
-    setTimeout(() => {
-      const newDresses = loadMockDresses(page, loadAll);
+    try {
+      const all = await fetchAllDresses();
 
-      setDresses((prev) => {
-        const combined = reset ? newDresses : [...prev, ...newDresses];
-
-        // ✅ De-duplicate by ID
-        const unique = Array.from(new Map(combined.map((d) => [d.id, d])).values());
-
-        return unique;
+      // Normalise the images field so it is always an array of strings.
+      // We avoid using `any` to satisfy the no-explicit-any ESLint rule.
+      const normalised: Dress[] = all.map((d) => {
+        const imagesArray = Array.isArray(d.images) ? d.images : d.images ? [d.images] : [];
+        return { ...d, images: imagesArray };
       });
 
-      setFilteredDresses((prev) => {
-        const combined = reset ? newDresses : [...prev, ...newDresses];
-
-        const unique = Array.from(new Map(combined.map((d) => [d.id, d])).values());
-
-        return unique;
-      });
-
-      const totalLoaded = page * ITEMS_PER_PAGE;
-      setHasMore(totalLoaded < TOTAL_ITEMS);
-
+      setDresses(normalised);
+      setFilteredDresses(normalised);
+      setHasMore(normalised.length > ITEMS_PER_PAGE);
+    } finally {
       setLoading(false);
-    }, 800);
+    }
   }, []);
 
-  /* ------------------------------ Effects -------------------------------- */
+  /* Initial load */
   useEffect(() => {
-    loadDresses(1, true, true);
-  }, [filters.type]);
+    loadDresses();
+  }, [loadDresses]);
 
+  /* Re-filter when filters change */
   useEffect(() => {
     setFilteredDresses(
       dresses.filter(
@@ -100,23 +94,22 @@ const HomePage: React.FC = () => {
     );
   }, [filters, dresses]);
 
-  /* ------------------------------ Infinite scroll ------------------------ */
+  /* Infinite scroll */
   const fetchNextPage = () => {
     const next = currentPage + 1;
-    loadDresses(next);
     setCurrentPage(next);
+    setHasMore(filteredDresses.length > next * ITEMS_PER_PAGE);
   };
 
   const lastDressElementRef = useInfiniteScroll(fetchNextPage, hasMore, loading);
 
-  /* ------------------------------ Handlers ------------------------------- */
+  /* Handlers */
   const handleFilterChange = (name: keyof Filters, value: string | number) =>
     setFilters((prev) => ({ ...prev, [name]: value }));
-
   const handleFavorite = (id: number, fav: boolean) =>
     console.log(`Dress ${id} ${fav ? 'added to' : 'removed from'} favorites`);
 
-  /* ------------------------------ Render --------------------------------- */
+  /* Render */
   return (
     <div className="min-h-screen bg-gray-50">
       <Header
@@ -153,10 +146,10 @@ const HomePage: React.FC = () => {
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                  {filteredDresses.map((dress, i) => (
+                  {displayedDresses.map((dress, i) => (
                     <div
                       key={dress.id}
-                      ref={i === filteredDresses.length - 1 ? lastDressElementRef : undefined}
+                      ref={i === displayedDresses.length - 1 ? lastDressElementRef : undefined}
                     >
                       <DressCard dress={dress} onFavorite={handleFavorite} />
                     </div>

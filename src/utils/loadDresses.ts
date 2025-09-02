@@ -1,23 +1,19 @@
 // src\utils\loadDresses.ts
-import { generateMockDresses } from "./generateDresses";
-import { DRESS_CATALOGUE } from "../mocks/dresses";
-
-export const ITEMS_PER_PAGE = generateMockDresses(1).length;
-export const TOTAL_ITEMS = DRESS_CATALOGUE.length;
-export const MAX_PAGES = Math.ceil(TOTAL_ITEMS / ITEMS_PER_PAGE);
+import type { Dress } from '../types/dress';
+import { fetchAllDresses } from '../api/dresses';
 
 /**
- * Loads mock dresses based on page and flag to load all pages.
- * @param page - The page to load (default 1)
- * @param loadAll - Whether to load all pages at once
- * @returns An array of mock Dress objects
+ * Fetch dresses from the backend and optionally paginate them.
+ *
+ * @param page   The page number (1-based) to return.
+ * @param loadAll If true, return all dresses regardless of page.
+ * @param limit  Items per page. Defaults to 20.
  */
-export function loadMockDresses(page = 1, loadAll = false) {
+export async function loadDresses(page = 1, loadAll = false, limit = 20): Promise<Dress[]> {
+  const all = await fetchAllDresses();
   if (loadAll) {
-    return Array.from({ length: MAX_PAGES }).flatMap((_, i) =>
-      generateMockDresses(i + 1)
-    );
+    return all;
   }
-
-  return generateMockDresses(page);
+  const start = (Math.max(1, page) - 1) * limit;
+  return all.slice(start, start + limit);
 }

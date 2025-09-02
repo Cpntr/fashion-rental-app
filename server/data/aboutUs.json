@@ -1,0 +1,14 @@
+{
+  "title": "About Fashion Rental",
+  "subtitle": "Welcome to Fashion Rental by Iti Vashistha",
+  "image": "/profile-pic1.jpg",
+  "story": [
+    "We are your premier destination for exquisite dress rentals in India. From traditional Indian wear to contemporary Western outfits, we offer a curated collection of stunning dresses for every occasion.",
+    "Founded with the vision of making fashion accessible and sustainable, Fashion Rental brings you designer wear at affordable prices. Whether it’s a wedding, party, or special event, we have the perfect outfit for you."
+  ],
+  "contact": {
+    "email": "contact@fashionrental.in",
+    "phone": "+91 98765 43210",
+    "address": "Fashion Street, Mumbai, Maharashtra 400001"
+  }
+}

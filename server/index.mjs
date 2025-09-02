@@ -11,6 +11,18 @@ app.use(express.json());
 
 const DATA_FILE = path.resolve('server/data/dresses.json');
 
+const SLIDES_FILE = path.resolve('server/data/slides.json');
+
+const ABOUT_FILE = path.resolve('server/data/aboutUs.json');
+
+async function loadSlides() {
+  const raw = await fs.readFile(SLIDES_FILE, 'utf8');
+  return JSON.parse(raw);
+}
+async function saveSlides(slides) {
+  await fs.writeFile(SLIDES_FILE, JSON.stringify(slides, null, 2), 'utf8');
+}
+
 async function loadDresses() {
   const raw = await fs.readFile(DATA_FILE, 'utf8');
   return JSON.parse(raw);
@@ -75,4 +87,78 @@ app.delete('/api/dresses/:id', async (req, res) => {
 const PORT = process.env.PORT || 8787;
 app.listen(PORT, () => {
   console.log(`API ready at http://localhost:${PORT}`);
+});
+
+// Slides routes
+app.get('/api/slides', async (_, res) => {
+  const slides = await loadSlides();
+  res.json(slides);
+});
+
+app.get('/api/slides/:id', async (req, res) => {
+  const slides = await loadSlides();
+  const slide = slides.find((s) => s.id === Number(req.params.id));
+  if (!slide) return res.status(404).json({ error: 'Not found' });
+  res.json(slide);
+});
+
+app.post('/api/slides', async (req, res) => {
+  const slides = await loadSlides();
+  const nextId = slides.reduce((m, s) => Math.max(m, s.id), 0) + 1;
+  const { image, title, subtitle } = req.body;
+  if (!image || !title || !subtitle) {
+    return res.status(400).json({ error: 'Missing required fields' });
+  }
+  const newSlide = { id: nextId, image, title, subtitle };
+  slides.push(newSlide);
+  await saveSlides(slides);
+  res.status(201).json(newSlide);
+});
+
+app.put('/api/slides/:id', async (req, res) => {
+  const slides = await loadSlides();
+  const idx = slides.findIndex((s) => s.id === Number(req.params.id));
+  if (idx === -1) return res.status(404).json({ error: 'Not found' });
+  const { image, title, subtitle } = req.body;
+  if (image !== undefined) slides[idx].image = image;
+  if (title !== undefined) slides[idx].title = title;
+  if (subtitle !== undefined) slides[idx].subtitle = subtitle;
+  await saveSlides(slides);
+  res.json(slides[idx]);
+});
+
+app.delete('/api/slides/:id', async (req, res) => {
+  const slides = await loadSlides();
+  const next = slides.filter((s) => s.id !== Number(req.params.id));
+  if (next.length === slides.length) return res.status(404).json({ error: 'Not found' });
+  await saveSlides(next);
+  res.status(204).end();
+});
+
+async function loadAboutUs() {
+  const raw = await fs.readFile(ABOUT_FILE, 'utf8');
+  return JSON.parse(raw);
+}
+async function saveAboutUs(data) {
+  await fs.writeFile(ABOUT_FILE, JSON.stringify(data, null, 2), 'utf8');
+}
+
+// GET About Us
+app.get('/api/about-us', async (_, res) => {
+  try {
+    const data = await loadAboutUs();
+    res.json(data);
+  } catch (e) {
+    res.status(500).json({ error: 'Failed to load About Us' });
+  }
+});
+
+// UPDATE About Us
+app.put('/api/about-us', async (req, res) => {
+  try {
+    await saveAboutUs(req.body);
+    res.json(req.body);
+  } catch (e) {
+    res.status(500).json({ error: 'Failed to save About Us' });
+  }
 });

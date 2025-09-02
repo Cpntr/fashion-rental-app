@@ -1,3 +1,4 @@
+// src\App.tsx
 import React, { Suspense } from "react";
 import HomePage from "./pages/HomePage";
 

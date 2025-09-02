@@ -13,7 +13,7 @@ import { getNextDressId } from './idGenerator';
 const DEFAULT_PAGE_COUNT = 9;
 const DEFAULT_LIMIT = DEFAULT_PAGE_COUNT;
 
-export function generateMockDresses(_page = 1, limit = DEFAULT_LIMIT): Dress[] {
+export function generateMockDresses(limit = DEFAULT_LIMIT): Dress[] {
   // Normalize the limit to ensure at least one item is generated.
   // The `_page` parameter is retained for backwards compatibility
   // but is intentionally unused to avoid a no-unused-vars warning.

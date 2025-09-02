@@ -1,3 +1,4 @@
+// server\index.mjs
 import express from 'express';
 import cors from 'cors';
 import fs from 'node:fs/promises';

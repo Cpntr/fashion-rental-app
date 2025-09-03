@@ -1,4 +1,4 @@
-// src/components for Admin dresses section
+// src/components/admin/AdminDresses.tsx
 // This component manages the dresses in the admin dashboard. It includes a
 // search field to quickly find a dress, a form for adding new dresses and
 // edit cards for existing dresses. It leverages the DRESS_TYPES list for
@@ -89,7 +89,7 @@ const AdminDresses: React.FC<Props> = ({
       </div>
 
       {/* Add new dress form */}
-      <div className="bg-white p-6 rounded-xl shadow">
+      <div className="bg-white p-6 rounded-xl shadow ">
         <h2 className="text-xl font-bold mb-4">Add New Dress</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           <input
@@ -146,14 +146,35 @@ const AdminDresses: React.FC<Props> = ({
             value={newDress.reviews}
             onChange={(e) => setNewDress({ ...newDress, reviews: Number(e.target.value) })}
           />
-          {/* File input for images */}
-          <input
-            type="file"
-            multiple
-            accept="image/*"
-            className="p-2 border rounded"
-            onChange={(e) => handleNewImagesChange(e.target.files)}
-          />
+
+          {/* ===== Button-style file input for NEW dress images ===== */}
+          <div className="col-span-full">
+            {/* Hidden input */}
+            <input
+              type="file"
+              id="new-dress-images"
+              multiple
+              accept="image/*"
+              className="hidden"
+              onChange={(e) => handleNewImagesChange(e.target.files)}
+            />
+            {/* Button-style trigger */}
+            <label
+              htmlFor="new-dress-images"
+              className="inline-block bg-pink-500 text-white px-4 py-2 rounded cursor-pointer hover:bg-pink-600"
+            >
+              Choose Files
+            </label>
+            {/* Selected count / helper text */}
+            {Array.isArray((newDress as any).images) && (newDress as any).images.length > 0 ? (
+              <span className="ml-3 text-sm text-gray-600">
+                {(newDress as any).images.length} file(s) selected
+              </span>
+            ) : (
+              <span className="ml-3 text-sm text-gray-400">No files selected</span>
+            )}
+          </div>
+
           <textarea
             className="p-2 border rounded col-span-full"
             placeholder="Description"
@@ -161,6 +182,7 @@ const AdminDresses: React.FC<Props> = ({
             onChange={(e) => setNewDress({ ...newDress, description: e.target.value })}
           />
         </div>
+
         {/* Preview of new images */}
         {Array.isArray((newDress as any).images) && (newDress as any).images.length > 0 && (
           <div className="mt-4 flex flex-wrap gap-4">
@@ -176,6 +198,8 @@ const AdminDresses: React.FC<Props> = ({
                   type="button"
                   onClick={() => removeNewImage(i)}
                   className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center"
+                  aria-label={`Remove image ${i + 1}`}
+                  title="Remove"
                 >
                   ×
                 </button>
@@ -194,8 +218,10 @@ const AdminDresses: React.FC<Props> = ({
       {/* Existing dresses */}
       {filtered.map((dress) => {
         const origIndex = dresses.findIndex((d) => d.id === dress.id);
+        const imageCount = Array.isArray(dress.images) ? dress.images.length : dress.images ? 1 : 0;
+
         return (
-          <div key={dress.id} className="bg-white p-6 rounded-xl shadow space-y-4">
+          <div key={dress.id} className="bg-white p-6 rounded-xl shadow space-y-4 ">
             <h3 className="font-semibold text-lg">Edit Dress #{dress.id}</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               <input
@@ -249,35 +275,48 @@ const AdminDresses: React.FC<Props> = ({
                 value={dress.reviews}
                 onChange={(e) => onChange(origIndex, 'reviews', Number(e.target.value))}
               />
-              {/* File input to add new images for this dress */}
-              <input
-                type="file"
-                multiple
-                accept="image/*"
-                className="p-2 border rounded"
-                onChange={(e) => {
-                  const files = e.target.files;
-                  if (!files) return;
-                  fileListToDataUrls(files).then((newImages) => {
-                    // Append the new images to any existing ones.  If the existing
-                    // images are not an array (e.g. a single string), normalise
-                    // them first.
-                    const existing = Array.isArray(dress.images)
-                      ? (dress.images as string[])
-                      : dress.images
-                      ? [dress.images as string]
-                      : [];
-                    const combined = [...existing, ...newImages];
-                    onChange(origIndex, 'images', combined);
-                  });
-                }}
-              />
+
+              {/* ===== Button-style file input to ADD images to this existing dress ===== */}
+              <div className="col-span-full">
+                {/* Hidden input */}
+                <input
+                  type="file"
+                  id={`dress-${dress.id}-images`}
+                  multiple
+                  accept="image/*"
+                  className="hidden"
+                  onChange={(e) => {
+                    const files = e.target.files;
+                    if (!files) return;
+                    fileListToDataUrls(files).then((newImages) => {
+                      // Append to existing images (normalize non-array to array)
+                      const existing = Array.isArray(dress.images)
+                        ? (dress.images as string[])
+                        : dress.images
+                        ? [dress.images as string]
+                        : [];
+                      const combined = [...existing, ...newImages];
+                      onChange(origIndex, 'images', combined);
+                    });
+                  }}
+                />
+                {/* Button-style trigger */}
+                <label
+                  htmlFor={`dress-${dress.id}-images`}
+                  className="inline-block bg-pink-500 text-white px-4 py-2 rounded cursor-pointer hover:bg-pink-600"
+                >
+                  Add Images
+                </label>
+                <span className="ml-3 text-sm text-gray-600">{imageCount} image(s)</span>
+              </div>
+
               <textarea
                 className="p-2 border rounded col-span-full"
                 value={dress.description}
                 onChange={(e) => onChange(origIndex, 'description', e.target.value)}
               />
             </div>
+
             {/* Preview images with remove option */}
             {dress.images && Array.isArray(dress.images) && dress.images.length > 0 && (
               <div className="flex flex-wrap gap-4 mt-4">
@@ -297,6 +336,8 @@ const AdminDresses: React.FC<Props> = ({
                         onChange(origIndex, 'images', arr);
                       }}
                       className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center"
+                      aria-label={`Remove image ${i + 1}`}
+                      title="Remove"
                     >
                       ×
                     </button>
@@ -304,6 +345,7 @@ const AdminDresses: React.FC<Props> = ({
                 ))}
               </div>
             )}
+
             <div className="flex gap-4 mt-4">
               <button
                 className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"

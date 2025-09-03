@@ -149,6 +149,19 @@ const Admin: React.FC = () => {
   };
 
   /**
+   * Handle logout by clearing authentication and sensitive states
+   */
+  const handleLogout = () => {
+    setAuthenticated(false);
+    setPassword('');
+    setAboutData(null);
+    setAboutEdit(null);
+    setDresses([]);
+    setSlides([]);
+    setSection('about');
+  };
+
+  /**
    * Helpers for handling dresses edits.
    */
   const handleDressChange = (index: number, field: keyof Omit<Dress, 'id'>, value: any) => {
@@ -410,6 +423,13 @@ const Admin: React.FC = () => {
           onClick={() => setSection('slides')}
         >
           Slides
+        </button>
+
+        <button
+          className="ml-auto px-4 py-2 rounded-lg shadow bg-red-500 text-white hover:bg-red-600"
+          onClick={handleLogout}
+        >
+          Logout
         </button>
       </div>
 

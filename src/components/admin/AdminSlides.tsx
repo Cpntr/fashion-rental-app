@@ -2,6 +2,7 @@
 
 import React from 'react';
 import type { Slide } from '../../types/slide';
+import { fileToCompressedDataUrl } from '../../utils/imageCompression';
 
 interface Props {
   slides: Slide[];
@@ -56,10 +57,15 @@ const AdminSlides: React.FC<Props> = ({
                 onChange={async (e) => {
                   const f = e.target.files?.[0];
                   if (!f) return;
-                  const dataUrl = await fileToDataUrl(f);
+                  // ⬇️ tighter cap so base64 stays < ~700 KB total
+                  const dataUrl = await fileToCompressedDataUrl(f, {
+                    maxWidth: 1400,
+                    maxBytes: 500 * 1024,
+                  });
                   setNewSlide((prev) => ({ ...prev, image: dataUrl }));
                 }}
               />
+
               <label
                 htmlFor="new-slide-image"
                 className="inline-block bg-pink-500 text-white px-4 py-2 rounded cursor-pointer hover:bg-pink-600"
@@ -128,7 +134,11 @@ const AdminSlides: React.FC<Props> = ({
                   onChange={async (e) => {
                     const f = e.target.files?.[0];
                     if (!f) return;
-                    const dataUrl = await fileToDataUrl(f);
+                    const dataUrl = await fileToCompressedDataUrl(f, {
+                      maxWidth: 1400,
+                      maxBytes: 500 * 1024,
+                    });
+                    // ⬇️ correct: update this row, not newSlide
                     onChange(idx, 'image', dataUrl);
                   }}
                 />

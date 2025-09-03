@@ -1,10 +1,4 @@
 // src/components/admin/AdminDresses.tsx
-// This component manages the dresses in the admin dashboard. It includes a
-// search field to quickly find a dress, a form for adding new dresses and
-// edit cards for existing dresses. It leverages the DRESS_TYPES list for
-// the type dropdown and provides a simple star rating selector similar
-// to the FilterPanel component. It also supports uploading multiple
-// images with previews and removing individual images.
 
 import React, { useState } from 'react';
 // Import the list of dress types from the shared constants.  Keeping the list
@@ -12,6 +6,7 @@ import React, { useState } from 'react';
 // same values across the filter panel and admin forms.
 import { DRESS_TYPES } from '../../types/dressTypes';
 import type { Dress } from '../../types/dress';
+import { fileToCompressedDataUrl } from '../../utils/imageCompression';
 
 interface Props {
   dresses: Dress[];
@@ -34,22 +29,11 @@ const AdminDresses: React.FC<Props> = ({
 }) => {
   const [searchTerm, setSearchTerm] = useState('');
 
-  // Convert a FileList into an array of data URLs.  This helper returns a
-  // promise that resolves with an array of strings once all files have been
-  // read.  It is used both when adding a new dress and when attaching
-  // additional images to an existing dress.
-  const fileListToDataUrls = (files: FileList) => {
-    const readers: Promise<string>[] = [];
-    Array.from(files).forEach((file) => {
-      readers.push(
-        new Promise((resolve) => {
-          const reader = new FileReader();
-          reader.onload = (e) => resolve(e.target?.result as string);
-          reader.readAsDataURL(file);
-        }),
-      );
-    });
-    return Promise.all(readers);
+  const fileListToDataUrls = async (files: FileList) => {
+    const list = Array.from(files);
+    return Promise.all(
+      list.map((f) => fileToCompressedDataUrl(f, { maxWidth: 1400, maxBytes: 500 * 1024 })),
+    );
   };
 
   // Handle file uploads for the new dress. Converts files into data URLs for

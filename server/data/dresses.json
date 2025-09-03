@@ -1,7 +1,7 @@
 [
   {
     "id": 1,
-    "name": "Elegant Lehenga Set",
+    "name": "Elegant Lehenga Settt",
     "type": "Indian Traditional",
     "description": "Intricately embroidered lehenga with rich zari work – perfect for sangeet nights.",
     "price": 5230,
@@ -740,7 +740,9 @@
     "price": 3371,
     "rating": 3,
     "reviews": 461,
-    "images": ["https://source.unsplash.com/400x500/?dress,fashion,Sapphire"]
+    "images": [
+      "https://source.unsplash.com/400x500/?dress,fashion,Sapphire"
+    ]
   },
   {
     "id": 64,
@@ -750,7 +752,9 @@
     "price": 3428,
     "rating": 5,
     "reviews": 128,
-    "images": ["https://source.unsplash.com/400x500/?dress,fashion,Blush"]
+    "images": [
+      "https://source.unsplash.com/400x500/?dress,fashion,Blush"
+    ]
   },
   {
     "id": 65,
@@ -760,7 +764,9 @@
     "price": 1319,
     "rating": 5,
     "reviews": 465,
-    "images": ["https://source.unsplash.com/400x500/?dress,fashion,Olive"]
+    "images": [
+      "https://source.unsplash.com/400x500/?dress,fashion,Olive"
+    ]
   },
   {
     "id": 66,
@@ -770,7 +776,9 @@
     "price": 1697,
     "rating": 5,
     "reviews": 309,
-    "images": ["https://source.unsplash.com/400x500/?dress,fashion,Navy"]
+    "images": [
+      "https://source.unsplash.com/400x500/?dress,fashion,Navy"
+    ]
   },
   {
     "id": 67,
@@ -780,7 +788,9 @@
     "price": 2572,
     "rating": 5,
     "reviews": 410,
-    "images": ["https://source.unsplash.com/400x500/?dress,fashion,Coral"]
+    "images": [
+      "https://source.unsplash.com/400x500/?dress,fashion,Coral"
+    ]
   },
   {
     "id": 68,
@@ -790,7 +800,9 @@
     "price": 1927,
     "rating": 4,
     "reviews": 243,
-    "images": ["https://source.unsplash.com/400x500/?dress,fashion,Pearl"]
+    "images": [
+      "https://source.unsplash.com/400x500/?dress,fashion,Pearl"
+    ]
   },
   {
     "id": 69,
@@ -800,7 +812,9 @@
     "price": 2284,
     "rating": 3,
     "reviews": 496,
-    "images": ["https://source.unsplash.com/400x500/?dress,fashion,Burgundy"]
+    "images": [
+      "https://source.unsplash.com/400x500/?dress,fashion,Burgundy"
+    ]
   },
   {
     "id": 70,
@@ -810,7 +824,9 @@
     "price": 3310,
     "rating": 4,
     "reviews": 146,
-    "images": ["https://source.unsplash.com/400x500/?dress,fashion,Teal"]
+    "images": [
+      "https://source.unsplash.com/400x500/?dress,fashion,Teal"
+    ]
   },
   {
     "id": 71,
@@ -820,7 +836,9 @@
     "price": 2675,
     "rating": 4,
     "reviews": 123,
-    "images": ["https://source.unsplash.com/400x500/?dress,fashion,Mustard"]
+    "images": [
+      "https://source.unsplash.com/400x500/?dress,fashion,Mustard"
+    ]
   },
   {
     "id": 72,
@@ -830,7 +848,9 @@
     "price": 1232,
     "rating": 5,
     "reviews": 404,
-    "images": ["https://source.unsplash.com/400x500/?dress,fashion,Charcoal"]
+    "images": [
+      "https://source.unsplash.com/400x500/?dress,fashion,Charcoal"
+    ]
   },
   {
     "id": 73,
@@ -840,7 +860,9 @@
     "price": 1877,
     "rating": 3,
     "reviews": 258,
-    "images": ["https://source.unsplash.com/400x500/?dress,fashion,Lavender"]
+    "images": [
+      "https://source.unsplash.com/400x500/?dress,fashion,Lavender"
+    ]
   },
   {
     "id": 74,
@@ -850,7 +872,9 @@
     "price": 1611,
     "rating": 4,
     "reviews": 496,
-    "images": ["https://source.unsplash.com/400x500/?dress,fashion,Plum"]
+    "images": [
+      "https://source.unsplash.com/400x500/?dress,fashion,Plum"
+    ]
   },
   {
     "id": 75,
@@ -860,7 +884,9 @@
     "price": 3394,
     "rating": 4,
     "reviews": 88,
-    "images": ["https://source.unsplash.com/400x500/?dress,fashion,Sky"]
+    "images": [
+      "https://source.unsplash.com/400x500/?dress,fashion,Sky"
+    ]
   },
   {
     "id": 76,
@@ -870,7 +896,9 @@
     "price": 2415,
     "rating": 4,
     "reviews": 409,
-    "images": ["https://source.unsplash.com/400x500/?dress,fashion,Golden"]
+    "images": [
+      "https://source.unsplash.com/400x500/?dress,fashion,Golden"
+    ]
   },
   {
     "id": 77,
@@ -880,7 +908,9 @@
     "price": 3221,
     "rating": 4,
     "reviews": 360,
-    "images": ["https://source.unsplash.com/400x500/?dress,fashion,Onyx"]
+    "images": [
+      "https://source.unsplash.com/400x500/?dress,fashion,Onyx"
+    ]
   },
   {
     "id": 78,
@@ -890,7 +920,9 @@
     "price": 3149,
     "rating": 5,
     "reviews": 178,
-    "images": ["https://source.unsplash.com/400x500/?dress,fashion,Ivory"]
+    "images": [
+      "https://source.unsplash.com/400x500/?dress,fashion,Ivory"
+    ]
   },
   {
     "id": 79,
@@ -900,7 +932,9 @@
     "price": 3009,
     "rating": 3,
     "reviews": 263,
-    "images": ["https://source.unsplash.com/400x500/?dress,fashion,Mint"]
+    "images": [
+      "https://source.unsplash.com/400x500/?dress,fashion,Mint"
+    ]
   },
   {
     "id": 80,
@@ -910,7 +944,9 @@
     "price": 3141,
     "rating": 4,
     "reviews": 213,
-    "images": ["https://source.unsplash.com/400x500/?dress,fashion,Magenta"]
+    "images": [
+      "https://source.unsplash.com/400x500/?dress,fashion,Magenta"
+    ]
   },
   {
     "id": 81,
@@ -920,7 +956,9 @@
     "price": 3052,
     "rating": 5,
     "reviews": 120,
-    "images": ["https://source.unsplash.com/400x500/?dress,fashion,Beige"]
+    "images": [
+      "https://source.unsplash.com/400x500/?dress,fashion,Beige"
+    ]
   },
   {
     "id": 82,
@@ -930,7 +968,9 @@
     "price": 1913,
     "rating": 5,
     "reviews": 122,
-    "images": ["https://source.unsplash.com/400x500/?dress,fashion,Wine"]
+    "images": [
+      "https://source.unsplash.com/400x500/?dress,fashion,Wine"
+    ]
   },
   {
     "id": 83,
@@ -940,7 +980,9 @@
     "price": 2672,
     "rating": 5,
     "reviews": 305,
-    "images": ["https://source.unsplash.com/400x500/?dress,fashion,Cobalt"]
+    "images": [
+      "https://source.unsplash.com/400x500/?dress,fashion,Cobalt"
+    ]
   },
   {
     "id": 84,
@@ -950,7 +992,9 @@
     "price": 3289,
     "rating": 5,
     "reviews": 163,
-    "images": ["https://source.unsplash.com/400x500/?dress,fashion,Fuchsia"]
+    "images": [
+      "https://source.unsplash.com/400x500/?dress,fashion,Fuchsia"
+    ]
   },
   {
     "id": 85,
@@ -960,7 +1004,9 @@
     "price": 3069,
     "rating": 3,
     "reviews": 426,
-    "images": ["https://source.unsplash.com/400x500/?dress,fashion,Silver"]
+    "images": [
+      "https://source.unsplash.com/400x500/?dress,fashion,Silver"
+    ]
   },
   {
     "id": 86,
@@ -970,7 +1016,9 @@
     "price": 1623,
     "rating": 5,
     "reviews": 82,
-    "images": ["https://source.unsplash.com/400x500/?dress,fashion,Taupe"]
+    "images": [
+      "https://source.unsplash.com/400x500/?dress,fashion,Taupe"
+    ]
   },
   {
     "id": 87,
@@ -980,7 +1028,9 @@
     "price": 2237,
     "rating": 5,
     "reviews": 221,
-    "images": ["https://source.unsplash.com/400x500/?dress,fashion,Apricot"]
+    "images": [
+      "https://source.unsplash.com/400x500/?dress,fashion,Apricot"
+    ]
   },
   {
     "id": 88,
@@ -990,7 +1040,9 @@
     "price": 2173,
     "rating": 4,
     "reviews": 259,
-    "images": ["https://source.unsplash.com/400x500/?dress,fashion,Rose"]
+    "images": [
+      "https://source.unsplash.com/400x500/?dress,fashion,Rose"
+    ]
   },
   {
     "id": 89,
@@ -1000,7 +1052,9 @@
     "price": 2117,
     "rating": 5,
     "reviews": 54,
-    "images": ["https://source.unsplash.com/400x500/?dress,fashion,Mauve"]
+    "images": [
+      "https://source.unsplash.com/400x500/?dress,fashion,Mauve"
+    ]
   },
   {
     "id": 90,
@@ -1010,7 +1064,9 @@
     "price": 3394,
     "rating": 5,
     "reviews": 103,
-    "images": ["https://source.unsplash.com/400x500/?dress,fashion,Forest"]
+    "images": [
+      "https://source.unsplash.com/400x500/?dress,fashion,Forest"
+    ]
   },
   {
     "id": 91,
@@ -1020,7 +1076,9 @@
     "price": 2279,
     "rating": 3,
     "reviews": 295,
-    "images": ["https://source.unsplash.com/400x500/?dress,fashion,Periwinkle"]
+    "images": [
+      "https://source.unsplash.com/400x500/?dress,fashion,Periwinkle"
+    ]
   },
   {
     "id": 92,
@@ -1030,7 +1088,9 @@
     "price": 1276,
     "rating": 3,
     "reviews": 87,
-    "images": ["https://source.unsplash.com/400x500/?dress,fashion,Slate"]
+    "images": [
+      "https://source.unsplash.com/400x500/?dress,fashion,Slate"
+    ]
   },
   {
     "id": 93,
@@ -1040,7 +1100,9 @@
     "price": 1910,
     "rating": 4,
     "reviews": 371,
-    "images": ["https://source.unsplash.com/400x500/?dress,fashion,Terracotta"]
+    "images": [
+      "https://source.unsplash.com/400x500/?dress,fashion,Terracotta"
+    ]
   },
   {
     "id": 94,
@@ -1050,7 +1112,9 @@
     "price": 1400,
     "rating": 4,
     "reviews": 136,
-    "images": ["https://source.unsplash.com/400x500/?dress,fashion,Canary"]
+    "images": [
+      "https://source.unsplash.com/400x500/?dress,fashion,Canary"
+    ]
   },
   {
     "id": 95,
@@ -1060,7 +1124,9 @@
     "price": 3451,
     "rating": 3,
     "reviews": 301,
-    "images": ["https://source.unsplash.com/400x500/?dress,fashion,Khaki"]
+    "images": [
+      "https://source.unsplash.com/400x500/?dress,fashion,Khaki"
+    ]
   },
   {
     "id": 96,
@@ -1070,7 +1136,9 @@
     "price": 3195,
     "rating": 5,
     "reviews": 239,
-    "images": ["https://source.unsplash.com/400x500/?dress,fashion,Crimson"]
+    "images": [
+      "https://source.unsplash.com/400x500/?dress,fashion,Crimson"
+    ]
   },
   {
     "id": 97,
@@ -1080,7 +1148,9 @@
     "price": 3002,
     "rating": 5,
     "reviews": 70,
-    "images": ["https://source.unsplash.com/400x500/?dress,fashion,Denim"]
+    "images": [
+      "https://source.unsplash.com/400x500/?dress,fashion,Denim"
+    ]
   },
   {
     "id": 98,
@@ -1090,7 +1160,9 @@
     "price": 3145,
     "rating": 4,
     "reviews": 160,
-    "images": ["https://source.unsplash.com/400x500/?dress,fashion,Violet"]
+    "images": [
+      "https://source.unsplash.com/400x500/?dress,fashion,Violet"
+    ]
   },
   {
     "id": 99,
@@ -1100,7 +1172,9 @@
     "price": 1924,
     "rating": 4,
     "reviews": 106,
-    "images": ["https://source.unsplash.com/400x500/?dress,fashion,Nude"]
+    "images": [
+      "https://source.unsplash.com/400x500/?dress,fashion,Nude"
+    ]
   },
   {
     "id": 100,
@@ -1110,7 +1184,9 @@
     "price": 2285,
     "rating": 3,
     "reviews": 139,
-    "images": ["https://source.unsplash.com/400x500/?dress,fashion,Cinnamon"]
+    "images": [
+      "https://source.unsplash.com/400x500/?dress,fashion,Cinnamon"
+    ]
   },
   {
     "id": 101,
@@ -1120,7 +1196,9 @@
     "price": 2493,
     "rating": 4,
     "reviews": 121,
-    "images": ["https://source.unsplash.com/400x500/?dress,fashion,Ink"]
+    "images": [
+      "https://source.unsplash.com/400x500/?dress,fashion,Ink"
+    ]
   },
   {
     "id": 102,
@@ -1130,7 +1208,9 @@
     "price": 1715,
     "rating": 5,
     "reviews": 413,
-    "images": ["https://source.unsplash.com/400x500/?dress,fashion,Lilac"]
+    "images": [
+      "https://source.unsplash.com/400x500/?dress,fashion,Lilac"
+    ]
   },
   {
     "id": 103,
@@ -1140,7 +1220,9 @@
     "price": 3363,
     "rating": 4,
     "reviews": 445,
-    "images": ["https://source.unsplash.com/400x500/?dress,fashion,Peach"]
+    "images": [
+      "https://source.unsplash.com/400x500/?dress,fashion,Peach"
+    ]
   },
   {
     "id": 104,
@@ -1150,7 +1232,9 @@
     "price": 2779,
     "rating": 5,
     "reviews": 278,
-    "images": ["https://source.unsplash.com/400x500/?dress,fashion,Dusty"]
+    "images": [
+      "https://source.unsplash.com/400x500/?dress,fashion,Dusty"
+    ]
   },
   {
     "id": 105,
@@ -1160,7 +1244,9 @@
     "price": 2101,
     "rating": 5,
     "reviews": 271,
-    "images": ["https://source.unsplash.com/400x500/?dress,fashion,Amber"]
+    "images": [
+      "https://source.unsplash.com/400x500/?dress,fashion,Amber"
+    ]
   },
   {
     "id": 106,
@@ -1170,6 +1256,8 @@
     "price": 3178,
     "rating": 3,
     "reviews": 436,
-    "images": ["https://source.unsplash.com/400x500/?dress,fashion,Indigo"]
+    "images": [
+      "https://source.unsplash.com/400x500/?dress,fashion,Indigo"
+    ]
   }
 ]

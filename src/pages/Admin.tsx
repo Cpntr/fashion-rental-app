@@ -6,6 +6,8 @@ import { fetchAllSlides, createSlide, updateSlide, deleteSlide } from '../api/sl
 import type { AboutUsContent } from '../types/aboutUs';
 import type { Dress } from '../types/dress';
 import type { Slide } from '../types/slide';
+// src/pages/Admin.tsx
+import { login as doLogin, isAuthenticated, logout as doLogout } from '../utils/login';
 
 // Pull the individual admin section components into the main admin page.  By
 // delegating the rendering of the About Us, Dresses and Slides editors to
@@ -32,7 +34,7 @@ const PASSWORD_HASH = '935472f30343c0b5405018a84e434709bff07685825d82d842e3973aa
 const Admin: React.FC = () => {
   // Authentication state
   const [password, setPassword] = useState('');
-  const [authenticated, setAuthenticated] = useState(false);
+  const [authenticated, setAuthenticated] = useState<boolean>(isAuthenticated());
 
   // Which section is currently being edited: about, dresses or slides
   const [section, setSection] = useState<'about' | 'dresses' | 'slides'>('about');
@@ -64,23 +66,23 @@ const Admin: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  useEffect(() => {
+    if (isAuthenticated()) {
+      setAuthenticated(true);
+    }
+  }, []);
+
   /**
    * Handle login by hashing the entered password and comparing it to the
    * stored hash. If they match, mark as authenticated and load data.
    */
   const handleLogin = async () => {
-    try {
-      const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(password));
-      const hash = Array.from(new Uint8Array(buf))
-        .map((b) => b.toString(16).padStart(2, '0'))
-        .join('');
-      if (hash === PASSWORD_HASH) {
-        setAuthenticated(true);
-      } else {
-        alert('Incorrect password');
-      }
-    } finally {
-      setPassword('');
+    const ok = await doLogin(password);
+    setPassword('');
+    if (ok) {
+      setAuthenticated(true);
+    } else {
+      alert('Incorrect password');
     }
   };
 
@@ -152,6 +154,7 @@ const Admin: React.FC = () => {
    * Handle logout by clearing authentication and sensitive states
    */
   const handleLogout = () => {
+    doLogout(); 
     setAuthenticated(false);
     setPassword('');
     setAboutData(null);
